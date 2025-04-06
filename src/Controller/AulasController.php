@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Aulas;
+use App\Repository\AulasRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -59,5 +60,16 @@ final class AulasController extends AbstractController
             $entityManager->flush();
         }
         return new Response("<h2> Aulas metidas</h2>");
+    }
+
+    #[Route('/ver-aula/{codigo}', name: 'app_aulas_ver')]
+    public function verAula(AulasRepository $repo, float $codigo): Response
+    {
+        $aula = $repo->find($codigo);
+
+        return $this->render('aulas/aulas.html.twig', [
+            'controller_name' => 'AulasController',
+            'aulas' => [$aula],
+        ]);
     }
 }
